@@ -6,6 +6,8 @@ require 'five_mobile_push/client'
 module FiveMobilePush
   extend self
   
+  autoload :Device, 'five_mobile_push/device'
+  
   VALID_OPTION_KEYS = [:api_token, :application_uid, :id_type]
   SUPPORTED_PLATFORMS = %w(iphone blackberry android)
 
