@@ -15,6 +15,13 @@ module FiveMobilePush
       client.post 'notify/toDevices', :id_type => 'native', :id_values => devices.join(','), :payload => MultiJson.encode(payload)
     end
 
+    def notify_by_tags(platforms, tags, payload)
+      client.post 'notify/toTags', 
+        :platforms => self.class.build_platforms_string(platforms),
+        :tags => tags.join(','),
+        :payload => MultiJson.encode(payload)
+    end
+
     class << self
 
       def build_platforms_string(platforms)

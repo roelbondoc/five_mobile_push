@@ -8,16 +8,16 @@ describe FiveMobilePush::Notifier do
   let(:client) { FiveMobilePush::Client.new :api_token => api_token, :application_uid => application_uid }
 
   subject { FiveMobilePush::Notifier.new client }
-  
+
   let(:payload) do
     {
       :msg => {
         :type => "string",
         :value => "You sir are awesome"
       }
-    }      
+    }
   end
-  
+
   describe "#broadcast" do
 
     let(:broadcast_endpoint) { notifier_endpoint('broadcast') }
@@ -29,17 +29,29 @@ describe FiveMobilePush::Notifier do
     end
 
   end
-  
+
   describe '#notify_devices' do
-    
+
     let(:notify_devices_endpoint) { notifier_endpoint('toDevices') }
-    
+
     it "notifies a list of devices" do
       stub_request(:post, notify_devices_endpoint)
       subject.notify_devices ['abc', 'def'], payload
-      a_request(:post, notify_devices_endpoint).should have_been_made 
+      a_request(:post, notify_devices_endpoint).should have_been_made
     end
-    
+
+  end
+
+  describe "#notify_by_tags" do
+
+    let(:notify_by_tags_endpoint) { notifier_endpoint('toTags') }
+
+    it "notifies devices by tags" do
+      stub_request(:post, notify_by_tags_endpoint)
+      subject.notify_by_tags [:iphone, :android], ['tag1', 'tag2'], payload
+      a_request(:post, notify_by_tags_endpoint).should have_been_made
+    end
+
   end
 
   def notifier_endpoint(name)
