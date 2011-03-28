@@ -7,6 +7,7 @@ module FiveMobilePush
   extend self
   
   autoload :Device, 'five_mobile_push/device'
+  autoload :Notifier, 'five_mobile_push/notifier'
   
   VALID_OPTION_KEYS = [:api_token, :application_uid, :id_type]
   SUPPORTED_PLATFORMS = %w(iphone blackberry android)

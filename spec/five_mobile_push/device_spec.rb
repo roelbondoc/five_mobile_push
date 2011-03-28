@@ -84,14 +84,4 @@ describe FiveMobilePush::Device do
     "https://push.fivemobile.com/rest/device/#{name}"
   end
 
-  def build_request_body(data)
-    data = data.merge(:api_token => api_token, :application_id => application_uid)
-    String.new.tap do |body|
-      data.each do |key,value|
-        body << "#{key}=#{value}"
-        body << "&" unless key == :application_id
-      end
-    end
-  end
-
 end

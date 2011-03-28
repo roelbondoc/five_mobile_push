@@ -42,7 +42,7 @@ module FiveMobilePush
             request.path = path
             request.body = options
           end
-        end
+        end      
       end
     
   end
