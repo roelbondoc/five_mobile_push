@@ -8,6 +8,7 @@ module FiveMobilePush
   
   autoload :Device, 'five_mobile_push/device'
   autoload :Notifier, 'five_mobile_push/notifier'
+  autoload :Tag, 'five_mobile_push/tag'
   
   VALID_OPTION_KEYS = [:api_token, :application_uid, :id_type]
   SUPPORTED_PLATFORMS = %w(iphone blackberry android)

@@ -2,6 +2,7 @@ require 'five_mobile_push'
 require 'rspec'
 require 'webmock/rspec'
 require 'yajl'
+require 'uri'
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -19,4 +20,9 @@ def build_request_body(data)
       body << "&" unless key == :application_id
     end
   end
+end
+
+# URI escape
+def escape(s)
+  URI.escape(s).gsub(',', '%2C')
 end

@@ -24,7 +24,7 @@ module FiveMobilePush
 
     class << self
 
-      def build_platforms_string(platforms)
+      def build_platforms_string(platforms)      
         if platforms.kind_of?(Enumerable)
           platforms.join(',')
         else
