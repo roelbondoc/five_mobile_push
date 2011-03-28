@@ -8,7 +8,11 @@ module FiveMobilePush
     end
 
     def broadcast(platforms, payload)
-      client.post 'notify/broadcast', :platforms => self.class.build_platforms_string(platforms), :payload => MultiJson.encode(payload).to_s
+      client.post 'notify/broadcast', :platforms => self.class.build_platforms_string(platforms), :payload => MultiJson.encode(payload)
+    end
+    
+    def notify_devices(devices, payload)
+      client.post 'notify/toDevices', :id_type => 'native', :id_values => devices.join(','), :payload => MultiJson.encode(payload)
     end
 
     class << self
