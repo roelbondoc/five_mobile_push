@@ -3,17 +3,16 @@ module FiveMobilePush
 
     DEFAULT_ENDPOINT = 'https://push.fivemobile.com/rest/'
 
-    attr_accessor :application_uid, :api_token, :api_endpoint
+    attr_accessor :application_uid, :api_token
 
     def initialize(options={})
-      self.api_endpoint = DEFAULT_ENDPOINT
       self.application_uid = options[:application_uid] || FiveMobilePush.application_uid
       self.api_token = options[:api_token] || FiveMobilePush.api_token
     end
 
 
     def connection
-      @connection ||= Faraday::Connection.new(:url => self.api_endpoint,
+      @connection ||= Faraday::Connection.new(:url => DEFAULT_ENDPOINT,
                                               :headers => { :accept =>  'application/json',
       :user_agent => 'FiveMobilePush Ruby gem'}) do |builder|
         builder.adapter Faraday.default_adapter
