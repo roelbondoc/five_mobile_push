@@ -9,7 +9,7 @@ module FiveMobilePush
     end
     
     def create(tags)
-      @client.post 'device/tags/add', :id_type => 'native', :id_value => self.device_uid, :tags => tags.join(',')
+      @client.post 'device/tags/add', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => self.device_uid, :tags => tags.join(',')
     end
 
   end

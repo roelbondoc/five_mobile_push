@@ -40,7 +40,7 @@ describe FiveMobilePush::Device do
 
   context "id_value and id_type passed to service" do
 
-    let(:body) { build_request_body(:id_type => 'native', :id_value => device_uid) }
+    let(:body) { build_request_body(:id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => device_uid) }
 
     describe '#resume' do
 

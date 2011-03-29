@@ -20,15 +20,15 @@ module FiveMobilePush
     end
 
     def resume
-      @client.post 'device/resume', :id_type => 'native', :id_value => self.device_uid
+      @client.post 'device/resume', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => self.device_uid
     end
 
     def suspend
-      @client.post 'device/suspend', :id_type => 'native', :id_value => self.device_uid
+      @client.post 'device/suspend', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => self.device_uid
     end
 
     def unregister
-      @client.post 'device/unregister', :id_type => 'native', :id_value => self.device_uid
+      @client.post 'device/unregister', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => self.device_uid
     end
 
   end

@@ -10,7 +10,7 @@ module FiveMobilePush
     end
     
     def notify_devices(devices, payload)
-      @client.post 'notify/toDevices', :id_type => 'native', :id_values => devices.join(','), :payload => MultiJson.encode(payload)
+      @client.post 'notify/toDevices', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_values => devices.join(','), :payload => MultiJson.encode(payload)
     end
 
     def notify_by_tags(platforms, tags, payload)

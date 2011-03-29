@@ -10,8 +10,10 @@ module FiveMobilePush
   autoload :Notifier, 'five_mobile_push/notifier'
   autoload :Tag, 'five_mobile_push/tag'
   
-  VALID_OPTION_KEYS = [:api_token, :application_uid, :id_type]
+  VALID_OPTION_KEYS = [:api_token, :application_uid]
   SUPPORTED_PLATFORMS = %w(iphone blackberry android)
+
+  DEFAULT_ID_TYPE = 'native'
 
   attr_accessor *VALID_OPTION_KEYS
 

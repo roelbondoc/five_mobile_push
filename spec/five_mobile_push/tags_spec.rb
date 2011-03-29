@@ -15,7 +15,7 @@ describe FiveMobilePush::Tag do
     let(:tags) { %w(tag1 tag2) }
 
     it "adds a new tag to Five Mobile" do
-      body = build_request_body(:id_type => 'native', :id_value => device_uid, :tags => escape(tags.join(',')) )
+      body = build_request_body(:id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => device_uid, :tags => escape(tags.join(',')) )
       stub_request(:post, add_tag_endpoint).with(:body => body)
       subject.create tags
       a_request(:post, add_tag_endpoint).with(:body => body).should have_been_made
