@@ -1,5 +1,3 @@
-require 'faraday'
-require 'faraday_middleware'
 require 'faraday/errors'
 
 module FiveMobilePush
