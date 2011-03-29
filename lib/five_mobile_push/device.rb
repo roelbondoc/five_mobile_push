@@ -3,10 +3,10 @@ module FiveMobilePush
 
     VALID_OPTION_KEYS = [:alias, :email]
 
-    attr_accessor :client, :device_uid
+    attr_accessor :device_uid
 
     def initialize(client, device_uid, options={})
-      self.client = client
+      @client = client
       self.device_uid = device_uid
     end
 

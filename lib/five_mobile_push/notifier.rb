@@ -1,22 +1,20 @@
 module FiveMobilePush
   class Notifier
 
-    attr_accessor :client
-
     def initialize(client)
-      self.client = client
+      @client = client
     end
 
     def broadcast(platforms, payload)
-      client.post 'notify/broadcast', :platforms => self.class.build_platforms_string(platforms), :payload => MultiJson.encode(payload)
+      @client.post 'notify/broadcast', :platforms => self.class.build_platforms_string(platforms), :payload => MultiJson.encode(payload)
     end
     
     def notify_devices(devices, payload)
-      client.post 'notify/toDevices', :id_type => 'native', :id_values => devices.join(','), :payload => MultiJson.encode(payload)
+      @client.post 'notify/toDevices', :id_type => 'native', :id_values => devices.join(','), :payload => MultiJson.encode(payload)
     end
 
     def notify_by_tags(platforms, tags, payload)
-      client.post 'notify/toTags', 
+      @client.post 'notify/toTags', 
         :platforms => self.class.build_platforms_string(platforms),
         :tags => tags.join(','),
         :payload => MultiJson.encode(payload)
