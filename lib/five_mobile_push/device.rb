@@ -5,7 +5,7 @@ module FiveMobilePush
 
     attr_accessor :device_uid
 
-    def initialize(client, device_uid, options={})
+    def initialize(client, device_uid)
       @client = client
       self.device_uid = device_uid
     end
