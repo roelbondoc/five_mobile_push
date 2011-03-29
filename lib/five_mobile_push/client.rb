@@ -12,10 +12,11 @@ module FiveMobilePush
 
 
     def connection
-      @connection ||= Faraday::Connection.new(:url => DEFAULT_ENDPOINT,
-                                              :headers => { :accept =>  'application/json',
-      :user_agent => 'FiveMobilePush Ruby gem'}) do |builder|
+      @connection ||= Faraday.new(:url => DEFAULT_ENDPOINT, :user_agent => 'FiveMobilePush Ruby gem') do |builder|
         builder.adapter Faraday.default_adapter
+
+        builder.request :yajl
+
         builder.use Faraday::Response::ParseJson
         builder.use Faraday::Response::Mashify
       end
