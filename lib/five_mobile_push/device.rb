@@ -14,7 +14,8 @@ module FiveMobilePush
     def register(registration_data=nil)
       options = {:device_id => @device_uid}
       options[:reg_data] = registration_data unless registration_data.nil?
-      @client.post 'device/register', options
+      response = @client.post 'device/register', options
+      MultiJson.decode(response.body)
     end
 
     def resume
