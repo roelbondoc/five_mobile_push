@@ -9,7 +9,7 @@ describe FiveMobilePush::Client do
 
   it "connects using the fivemobile endpoint" do
     connection = subject.send(:connection).build_url(nil).to_s
-    endpoint = URI.parse("#{subject.api_endpoint}")
+    endpoint = URI.parse(described_class::DEFAULT_ENDPOINT)
     connection.should == endpoint.to_s
   end    
 
