@@ -1,3 +1,7 @@
+require 'faraday'
+require 'faraday_middleware'
+require 'faraday/errors'
+
 module FiveMobilePush
   class Client
 
@@ -15,10 +19,7 @@ module FiveMobilePush
       @connection ||= Faraday.new(:url => DEFAULT_ENDPOINT, :user_agent => 'FiveMobilePush Ruby gem') do |builder|
         builder.adapter Faraday.default_adapter
 
-        builder.request :yajl
-
-        builder.use Faraday::Response::ParseJson
-        builder.use Faraday::Response::Mashify
+        builder.use Faraday::Response::Errors
       end
     end
 
