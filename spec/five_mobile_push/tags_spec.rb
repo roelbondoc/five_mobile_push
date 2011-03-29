@@ -31,6 +31,24 @@ describe FiveMobilePush::Tag do
   end
 
   describe "#delete" do
+
+    let(:tags) { %w[tag1 tag2] }
+    let(:delete_tag_endpoint) { tag_endpoint("delete") }
+
+    it "unsubscribes from further notifications for tags" do
+      body = build_request_body(:id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => device_uid, :tags => escape(tags.join(',')))
+      stub_request(:post, delete_tag_endpoint).with(:body => body)
+      subject.delete(tags)
+      a_request(:post, delete_tag_endpoint).with(:body => body).should have_been_made
+    end
+
+    it "unsubscribes from further notifications for tag" do
+      body = build_request_body(:id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => device_uid, :tags => "bacon")
+      stub_request(:post, delete_tag_endpoint).with(:body => body)
+      subject.delete("bacon")
+      a_request(:post, delete_tag_endpoint).with(:body => body).should have_been_made
+    end
+
   end
 
   describe "#get" do
