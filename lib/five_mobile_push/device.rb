@@ -3,9 +3,13 @@ module FiveMobilePush
 
     VALID_OPTION_KEYS = [:alias, :email]
 
+    # @param [FiveMobilePush::Client] client The Client to use to send this request
+    #
+    # @param [String] device_uid The ID of the device being registered.
+    #   Maximum of 64 characters.
     def initialize(client, device_uid)
-      @client     = client
-      @device_uid = device_uid
+      @client      = client
+      @device_uid  = device_uid
     end
 
     # Registers a device for receiving push notifications from an application.
