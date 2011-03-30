@@ -8,7 +8,7 @@ RSpec.configure do |config|
   config.mock_with :rspec
 end
 
-def fixture(name)
+def load_fixture(name)
   File.read File.expand_path("../fixtures/#{name}", __FILE__)
 end
 
