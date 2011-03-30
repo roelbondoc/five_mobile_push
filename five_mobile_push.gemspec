@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "five_mobile_push"
   s.version     = FiveMobilePush::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Kevin Faustino"]
-  s.email       = ["kevin.faustino@gmail.com"]
+  s.authors     = ["Kevin Faustino", "James Herdman"]
+  s.email       = ["kevin.faustino@gmail.com", "james.herdman@me.com"]
   s.homepage    = ""
   s.summary     = %q{API wrapper for Five Mobile Push notification service}
   s.description = %q{API wrapper for Five Mobile Push notification service}
