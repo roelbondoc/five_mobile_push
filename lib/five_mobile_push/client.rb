@@ -36,6 +36,10 @@ module FiveMobilePush
     def notifier
       FiveMobilePush::Notifier.new(self)
     end
+    
+    def tag(device_uid)
+      FiveMobilePush::Tag.new(self, device_uid)
+    end
 
     private 
     

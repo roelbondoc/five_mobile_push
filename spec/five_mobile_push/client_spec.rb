@@ -29,6 +29,14 @@ describe FiveMobilePush::Client do
 
   end
 
+  describe "#tag" do
+
+    it "initializes a Tag" do
+      subject.tag('device-uid').should be_kind_of(FiveMobilePush::Tag)
+    end
+
+  end
+  
   context "response code is 400" do
     
     let(:path) { "https://push.fivemobile.com/rest/some_endpoint?api_token=#{api_token}&application_id=#{application_uid}" }
