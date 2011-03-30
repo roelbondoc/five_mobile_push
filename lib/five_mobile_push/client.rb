@@ -32,6 +32,10 @@ module FiveMobilePush
     def device(device_uid)
       FiveMobilePush::Device.new(self, device_uid)
     end
+    
+    def notifier
+      FiveMobilePush::Notifier.new(self)
+    end
 
     private 
     
