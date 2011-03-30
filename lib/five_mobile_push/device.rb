@@ -9,10 +9,15 @@ module FiveMobilePush
     end
 
     # Registers a device for receiving push notifications from an application.
-    # If the device is already registered, this call can update the existing registration details.
+    # If the device is already registered, this call can update the existing
+    # registration details.
     #
+    # @param [String] registration_data Platform specific device registration
+    #   data, e.g. iOS device token. Optional for some platforms
+    #
+    # @return [Hash] Has unique device API key. Required for many other calls.
     def register(registration_data=nil)
-      options = {:device_id => @device_uid}
+      options = { :device_id => @device_uid }
       options[:reg_data] = registration_data unless registration_data.nil?
       response = @client.post 'device/register', options
       MultiJson.decode(response.body)
