@@ -29,19 +29,19 @@ describe FiveMobilePush::Device do
 
     context "registration data is provided" do
 
-      let(:body) { build_request_body(:device_id => device_uid, :reg_data => device_token) }
+      let(:body) { build_request_body(:device_id => device_uid, :reg_data => device_token, :device_info => MultiJson.encode(device_info)) }
       
       before(:each) do
-        stub_request(:post, register_endpoint).with(:body => body).to_return(:body => load_fixture('register.json'))
+        stub_request(:post, register_endpoint).to_return(:body => load_fixture('register.json'))
       end
 
       it "registers a device" do
-        subject.register(device_token)
-        a_request(:post, register_endpoint).with(:body => body).should have_been_made
+        subject.register(device_info, device_token)
+        a_request(:post, register_endpoint).with(:body => /device_info=.*reg_data=#{device_token}/).should have_been_made
       end
 
-      it "returns an token on success" do
-        response = subject.register(device_token)
+      it "returns a token on success" do
+        response = subject.register(device_info, device_token)
         response['data'].should == '52750B30FFBC7DE3B362'
       end
 
