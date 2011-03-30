@@ -13,6 +13,13 @@ describe FiveMobilePush::Client do
     connection.should == endpoint.to_s
   end    
   
+  describe "#device" do
+    
+    it "initializes a Device" do
+      subject.device('abc').should be_kind_of(FiveMobilePush::Device)
+    end
+    
+  end  
   
   context "response code is 400" do
     
