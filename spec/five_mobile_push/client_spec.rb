@@ -13,6 +13,29 @@ describe FiveMobilePush::Client do
     connection.should == endpoint.to_s
   end    
   
+  describe "#device" do
+    
+    it "initializes a Device" do
+      subject.device('abc').should be_kind_of(FiveMobilePush::Device)
+    end
+    
+  end  
+  
+  describe "#notifier" do
+    
+    it "initializes a Notifier" do
+      subject.notifier.should be_kind_of(FiveMobilePush::Notifier)
+    end
+
+  end
+
+  describe "#tag" do
+
+    it "initializes a Tag" do
+      subject.tag('device-uid').should be_kind_of(FiveMobilePush::Tag)
+    end
+
+  end
   
   context "response code is 400" do
     

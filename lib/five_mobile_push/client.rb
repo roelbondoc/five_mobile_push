@@ -29,6 +29,18 @@ module FiveMobilePush
       perform_request(:post, path, options)
     end
 
+    def device(device_uid)
+      FiveMobilePush::Device.new(self, device_uid)
+    end
+    
+    def notifier
+      FiveMobilePush::Notifier.new(self)
+    end
+    
+    def tag(device_uid)
+      FiveMobilePush::Tag.new(self, device_uid)
+    end
+
     private 
     
       def perform_request(method, path, options={})
