@@ -20,8 +20,14 @@ module FiveMobilePush
 
   attr_accessor *VALID_OPTION_KEYS
 
+  attr_writer :adapter
+
   def configure
     yield self
+  end
+
+  def adapter
+    @adapter || Faraday.default_adapter
   end
 
 end
