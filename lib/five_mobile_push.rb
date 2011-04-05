@@ -7,6 +7,7 @@ module FiveMobilePush
   autoload :Device,   'five_mobile_push/device'
   autoload :Notifier, 'five_mobile_push/notifier'
   autoload :Tag,      'five_mobile_push/tag'
+  autoload :Payload,  'five_mobile_push/payload'
 
   class UnauthorizedError < StandardError; end
   class GeneralError      < StandardError; end
