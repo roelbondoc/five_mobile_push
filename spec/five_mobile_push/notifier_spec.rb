@@ -3,11 +3,9 @@ require 'uri'
 
 describe FiveMobilePush::Notifier do
 
-  let(:api_token) { 'token' }
-  let(:application_uid) { 'nulayer' }
-  let(:client) { FiveMobilePush::Client.new(:api_token => api_token, :application_uid => application_uid) }
+  let(:client) { Fabricate.build(:client) }
 
-  subject { FiveMobilePush::Notifier.new client }
+  subject { FiveMobilePush::Notifier.new(client) }
 
   describe "#broadcast" do
     let(:broadcast_endpoint) { notifier_endpoint('broadcast') }
