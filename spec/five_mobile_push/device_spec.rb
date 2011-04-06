@@ -2,17 +2,11 @@ require 'spec_helper'
 
 describe FiveMobilePush::Device do
 
-  let(:api_token)       { 'token' }
-
-  let(:application_uid) { 'nulayer' }
-
-  let(:client) { FiveMobilePush::Client.new(:api_token => api_token, :application_uid => application_uid) }
-
-  let(:device_uid) { '2b6f0cc904d137be2e1730235f5664094b831186' }
+  let(:client) { Fabricate.build(:client) }
 
   let(:device_token) { 'ABCDEFG' }
 
-  subject { FiveMobilePush::Device.new(client, device_uid) }
+  subject { Fabricate.build(:device) }
 
   describe '#register' do
 
@@ -29,7 +23,7 @@ describe FiveMobilePush::Device do
 
     context "registration data is provided" do
 
-      let(:body) { build_request_body(:device_id => device_uid, :reg_data => device_token, :device_info => MultiJson.encode(device_info)) }
+      let(:body) { build_request_body(client, :device_id => subject.device_uid, :reg_data => device_token, :device_info => MultiJson.encode(device_info)) }
       
       before(:each) do
         stub_request(:post, register_endpoint).to_return(:body => load_fixture('register.json'))
@@ -50,7 +44,7 @@ describe FiveMobilePush::Device do
     context "registration data is not provided" do
 
       it "registers a device" do
-        body = build_request_body(:device_id => device_uid, :device_info => device_info)
+        body = build_request_body(client, :device_id => subject.device_uid, :device_info => device_info)
         stub_request(:post, register_endpoint)
         subject.register(device_info)
 
@@ -63,7 +57,7 @@ describe FiveMobilePush::Device do
 
   context "id_value and id_type passed to service" do
 
-    let(:body) { build_request_body(:id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => device_uid) }
+    let(:body) { build_request_body(client, :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => subject.device_uid) }
 
     describe '#resume' do
 
