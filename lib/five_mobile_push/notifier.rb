@@ -41,6 +41,7 @@ module FiveMobilePush
       end
     end
 
+    # @private
     class PayloadProxy
       def message(message)
         @message = message
