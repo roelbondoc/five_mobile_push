@@ -8,13 +8,13 @@ module FiveMobilePush
     def broadcast(platforms, payload)
       @client.post 'notify/broadcast', :platforms => self.class.build_platforms_string(platforms), :payload => MultiJson.encode(payload)
     end
-    
+
     def notify_devices(devices, payload)
       @client.post 'notify/toDevices', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_values => devices.join(','), :payload => MultiJson.encode(payload)
     end
 
     def notify_by_tags(platforms, tags, payload)
-      @client.post 'notify/toTags', 
+      @client.post 'notify/toTags',
         :platforms => self.class.build_platforms_string(platforms),
         :tags => tags.join(','),
         :payload => MultiJson.encode(payload)
@@ -22,7 +22,7 @@ module FiveMobilePush
 
     class << self
 
-      def build_platforms_string(platforms)      
+      def build_platforms_string(platforms)
         if platforms.kind_of?(Enumerable)
           platforms.join(',')
         else
