@@ -1,15 +1,6 @@
 module FiveMobilePush
   # @todo Validate provided platforms
-  # @todo Simplify platform selection
   class Notifier
-
-    # The following are platforms supported by the Five Mobile Push platform
-
-    ALL        = "all"
-    IPHONE     = "iphone"
-    BLACKBERRY = "blackberry"
-    ANDROID    = "android"
-
     # @param [FiveMobilePush::Client] client The Client object to use when
     #   sending notices
     def initialize(client)
@@ -17,13 +8,6 @@ module FiveMobilePush
     end
 
     # Broadcast a notification to one or more platforms of an application.
-    #
-    # == Supported Platforms
-    #
-    # * all
-    # * iphone
-    # * blackberry
-    # * android
     #
     # @param [Array<String>, String] platforms Any of the supported platforms.
     #
@@ -34,12 +18,14 @@ module FiveMobilePush
     #
     # @example Simple usage
     #   n = FiveMobilePush::Notifier.new(client)
-    #   n.broadcast(FiveMobilePush::Notifier::ALL) do |message|
+    #   n.broadcast(FiveMobilePush::Platform::ALL) do |message|
     #     message.body "Downtime this weekend"
     #   end
+    #
+    # @see FiveMobilePush::Platform.supported_platforms
     def broadcast(platforms, &block)
       @client.post 'notify/broadcast',
-        :platforms => build_platforms_string(platforms),
+        :platforms => Platform.new(platforms).build_list,
         :payload   => Message.dsl(&block).to_json
     end
 
@@ -66,13 +52,6 @@ module FiveMobilePush
 
     # Notifies any device registered with the provided tags.
     #
-    # == Supported Platforms
-    #
-    # * all
-    # * iphone
-    # * blackberry
-    # * android
-    #
     # @param [Array<String>, String] platforms Any of the supported platforms.
     # @param [Array<String>] tags Any tag that is registered
     #
@@ -83,25 +62,16 @@ module FiveMobilePush
     #
     # @example Simple usage
     #   n = FiveMobilePush::Notifier.new(client)
-    #   n.notify_by_tags(FiveMobilePush::Notifier::ALL, ['muffin', 'bacon']) do |message|
+    #   n.notify_by_tags(FiveMobilePush::Platform::ALL, ['muffin', 'bacon']) do |message|
     #     message.body "Downtime this weekend"
     #   end
+    #
+    # @see FiveMobilePush::Platform.supported_platforms
     def notify_by_tags(platforms, tags, &block)
       @client.post 'notify/toTags',
-        :platforms => build_platforms_string(platforms),
+        :platforms => Platform.new(platforms).build_list,
         :tags      => tags.join(','),
         :payload   => Message.dsl(&block).to_json
     end
-
-    private
-
-    def build_platforms_string(platforms)
-      if platforms.kind_of?(Enumerable)
-        platforms.join(',')
-      else
-        platforms.to_s
-      end
-    end
-
   end
 end
