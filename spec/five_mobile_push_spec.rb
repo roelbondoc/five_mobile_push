@@ -35,11 +35,7 @@ describe FiveMobilePush do
 
   end
 
-  describe 'platforms' do
 
-    %w(iphone blackberry android).each do |platform|
-
-      specify { FiveMobilePush::SUPPORTED_PLATFORMS.should include(platform) }
 
     end
 

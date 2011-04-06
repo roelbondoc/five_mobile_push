@@ -15,7 +15,6 @@ module FiveMobilePush
 
 
   VALID_OPTION_KEYS = [:api_token, :application_uid]
-  SUPPORTED_PLATFORMS = %w(iphone blackberry android)
 
   DEFAULT_ID_TYPE = 'native'
 
