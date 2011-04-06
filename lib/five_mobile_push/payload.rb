@@ -1,10 +1,16 @@
 module FiveMobilePush
   class Payload
-    attr_accessor :message, :meta_data
+    attr_reader   :message
+    attr_accessor :meta_data
 
     def initialize(message, meta_data=nil)
       self.message   = message
       self.meta_data = meta_data
+    end
+
+    # @param [#to_s] message The message you wish to send with a notice
+    def message=(message)
+      @message = message.to_s
     end
 
     # @return [String] JSON representation of the Payload
