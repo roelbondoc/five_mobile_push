@@ -13,8 +13,8 @@ describe FiveMobilePush::Notifier do
     it "broadcasts a notification to one or more platforms of the application" do
       stub_request(:post, broadcast_endpoint)
 
-      subject.broadcast(:iphone) do |payload|
-        payload.message "Minor downtime tonight from 7PM-9PM EST"
+      subject.broadcast(:iphone) do |message|
+        message.body "Minor downtime tonight from 7PM-9PM EST"
       end
 
       a_request(:post, broadcast_endpoint).should have_been_made
@@ -29,8 +29,8 @@ describe FiveMobilePush::Notifier do
     it "notifies a list of devices" do
       stub_request(:post, notify_devices_endpoint)
 
-      subject.notify_devices(['abc', 'def']) do |payload|
-        payload.message 'You win a prize!'
+      subject.notify_devices(['abc', 'def']) do |message|
+        message.body 'You win a prize!'
       end
 
       a_request(:post, notify_devices_endpoint).should have_been_made
@@ -45,8 +45,8 @@ describe FiveMobilePush::Notifier do
     it "notifies devices by tags" do
       stub_request(:post, notify_by_tags_endpoint)
 
-      subject.notify_by_tags([:iphone, :android], ['tag1', 'tag2']) do |payload|
-        payload.message 'tag1 and tag2'
+      subject.notify_by_tags([:iphone, :android], ['tag1', 'tag2']) do |message|
+        message.body 'tag1 and tag2'
       end
 
       a_request(:post, notify_by_tags_endpoint).should have_been_made
