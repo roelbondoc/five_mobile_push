@@ -1,4 +1,6 @@
 module FiveMobilePush
+  # @private Used internally. You'll never use this class directly.
+  #   Documented for the benefit of contributors.
   class Payload
     attr_reader   :message
     attr_accessor :meta_data
