@@ -13,8 +13,8 @@ def load_fixture(name)
   File.read File.expand_path("../fixtures/#{name}", __FILE__)
 end
 
-def build_request_body(data)
-  data = data.merge(:api_token => api_token, :application_id => application_uid)
+def build_request_body(client, data)
+  data = data.merge(:api_token => client.api_token, :application_id => client.application_uid)
   String.new.tap do |body|
     data.each do |key,value|
       body << "#{key}=#{value}"
