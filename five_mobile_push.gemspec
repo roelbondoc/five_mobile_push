@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", ["~> 2.5.0"]
   s.add_development_dependency "yajl-ruby"
   s.add_development_dependency "webmock"
+  s.add_development_dependency "fabrication", ["~> 0.9.5"]
 end

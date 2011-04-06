@@ -3,6 +3,7 @@ require 'rspec'
 require 'webmock/rspec'
 require 'yajl'
 require 'uri'
+require 'fabrication'
 
 RSpec.configure do |config|
   config.mock_with :rspec
