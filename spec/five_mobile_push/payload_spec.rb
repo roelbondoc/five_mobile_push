@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe FiveMobilePush::Payload do
   describe '#to_json' do
-    subject { FiveMobilePush::Payload.new('bacon', { 'foo' => 'bar' }) }
+    subject { Fabricate.build(:payload) }
 
     it 'includes the message' do
-      subject.to_json.should include('bacon')
+      subject.to_json.should include(subject.message)
     end
 
     it 'includes meta data' do
-      subject.to_json.should include('foo', 'bar')
+      subject.to_json.should include(MultiJson.encode(subject.meta_data))
     end
 
     it 'excludes meta data if there is none' do
