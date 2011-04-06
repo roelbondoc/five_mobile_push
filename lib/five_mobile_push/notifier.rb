@@ -40,7 +40,7 @@ module FiveMobilePush
     def broadcast(platforms, &block)
       @client.post 'notify/broadcast',
         :platforms => build_platforms_string(platforms),
-        :payload   => capture_message(&block).to_json
+        :payload   => Message.dsl(&block).to_json
     end
 
     # Send a notification to any number of specified devices
@@ -61,7 +61,7 @@ module FiveMobilePush
       @client.post 'notify/toDevices',
         :id_type   => FiveMobilePush::DEFAULT_ID_TYPE,
         :id_values => devices.join(','),
-        :payload   => capture_message(&block).to_json
+        :payload   => Message.dsl(&block).to_json
     end
 
     # Notifies any device registered with the provided tags.
@@ -90,16 +90,10 @@ module FiveMobilePush
       @client.post 'notify/toTags',
         :platforms => build_platforms_string(platforms),
         :tags      => tags.join(','),
-        :payload   => capture_message(&block).to_json
+        :payload   => Message.dsl(&block).to_json
     end
 
     private
-
-    def capture_message(&block)
-      payload_proxy = Message.new
-      block.call(payload_proxy)
-      payload_proxy.to_payload
-    end
 
     def build_platforms_string(platforms)
       if platforms.kind_of?(Enumerable)

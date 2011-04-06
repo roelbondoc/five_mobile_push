@@ -13,6 +13,13 @@ module FiveMobilePush
       end
 
       # @private
+      def self.dsl(&block)
+        instance = new
+        block.call(instance)
+        instance.to_payload
+      end
+
+      # @private
       def to_payload
         FiveMobilePush::Payload.new(@message, @meta_data)
       end
