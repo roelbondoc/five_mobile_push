@@ -1,5 +1,7 @@
 require 'faraday'
 
+# Provides us protection against the FiveMobilePush API's error handling which
+# is currently incomplete.
 module Faraday
   class Response::Errors < Response::Middleware
 
