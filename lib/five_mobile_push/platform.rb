@@ -17,10 +17,6 @@ module FiveMobilePush
       ANDROID
     ]
 
-    # Exception to be raised when a user selects an invalid platform
-    class InvalidPlatform < StandardError
-    end
-
     # @private
     attr_reader :target_platforms
 
@@ -30,6 +26,7 @@ module FiveMobilePush
     # @private
     def initialize(*target_platforms)
       self.target_platforms = target_platforms
+      validate!
     end
 
     # @return [String] a formatted String with a list of the target platforms
@@ -44,23 +41,27 @@ module FiveMobilePush
     #
     # @private
     def target_platforms=(*target_platforms)
-      @target_platforms = target_platforms.flatten
+      @target_platforms = target_platforms.flatten.map(&:to_s)
     end
 
-    # @raise [InvalidPlatform] raised when an invalid target platform has been
+    # @raise [InvalidPlatformError] raised when an invalid target platform has been
     #   selected
     #
     # @private
     def validate!
-      if invalid_target_platforms.empty?
-        raise InvalidPlatform, "The following platforms are invalid: #{invalid_target_platforms}"
-      end
+      validates_target_platforms
     end
 
     private
 
     def invalid_target_platforms
       target_platforms - SUPPORTED_PLATFORMS
+    end
+
+    def validates_target_platforms
+      unless invalid_target_platforms.empty?
+        raise FiveMobilePush::InvalidPlatformError, "The following platforms are invalid: #{invalid_target_platforms}"
+      end
     end
   end
 end

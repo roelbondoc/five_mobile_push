@@ -6,6 +6,12 @@ describe FiveMobilePush::Platform do
       described_class.new(FiveMobilePush::Platform::ALL).
         target_platforms.should include(FiveMobilePush::Platform::ALL)
     end
+
+    it 'raises an InvalidPlatformError exception if an invalid platform was selected' do
+      expect {
+        described_class.new('fakeplatform')
+      }.to raise_error(FiveMobilePush::InvalidPlatformError)
+    end
   end
 
   describe '#build_list' do
