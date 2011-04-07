@@ -8,21 +8,28 @@ module FiveMobilePush
   autoload :Notifier, 'five_mobile_push/notifier'
   autoload :Tag,      'five_mobile_push/tag'
   autoload :Payload,  'five_mobile_push/payload'
+  autoload :Message,  'five_mobile_push/message'
+  autoload :Platform, 'five_mobile_push/platform'
 
-  class UnauthorizedError < StandardError; end
-  class GeneralError      < StandardError; end
-  class ServerError       < StandardError; end
-
-
-  VALID_OPTION_KEYS = [:api_token, :application_uid]
-  SUPPORTED_PLATFORMS = %w(iphone blackberry android)
+  class UnauthorizedError    < StandardError; end
+  class GeneralError         < StandardError; end
+  class ServerError          < StandardError; end
+  class InvalidPlatformError < StandardError; end
 
   DEFAULT_ID_TYPE = 'native'
 
-  attr_accessor *VALID_OPTION_KEYS
+  attr_accessor :api_token, :application_uid
 
   attr_writer :adapter
 
+  # @yield [config] Provides a block to conveniently configure the library
+  #
+  # @example Simple usage
+  #
+  #   FiveMobilePush.configure do |config|
+  #     config.api_token       = '12345'
+  #     config.application_uid = 'myfancyapp'
+  #   end
   def configure
     yield self
   end

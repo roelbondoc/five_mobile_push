@@ -20,29 +20,26 @@ describe FiveMobilePush do
 
   end
 
-  describe 'configure' do
+  describe '.configure' do
+    it 'can set the API token' do
+      api_token = '12345'
 
-    FiveMobilePush::VALID_OPTION_KEYS.each do |key|
-
-      it "sets the key #{key}" do
-        FiveMobilePush.configure do |config|
-          config.send("#{key}=", key)
-        end
-        FiveMobilePush.send(key).should == key
+      FiveMobilePush.configure do |config|
+        config.api_token = api_token
       end
 
+      FiveMobilePush.api_token.should == api_token
     end
 
-  end
+    it 'can set the application UID' do
+      application_uid = 'cheesebacon'
 
-  describe 'platforms' do
+      FiveMobilePush.configure do |config|
+        config.application_uid = application_uid
+      end
 
-    %w(iphone blackberry android).each do |platform|
-
-      specify { FiveMobilePush::SUPPORTED_PLATFORMS.should include(platform) }
-
+      FiveMobilePush.application_uid.should == application_uid
     end
-
   end
 
 end
