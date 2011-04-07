@@ -1,7 +1,5 @@
 require 'faraday'
 
-# @private
-#
 # Provides us protection against the FiveMobilePush API's error handling which
 # is currently incomplete.
 module Faraday
