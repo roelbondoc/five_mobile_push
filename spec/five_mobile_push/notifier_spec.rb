@@ -14,7 +14,7 @@ describe FiveMobilePush::Notifier do
 
       subject.broadcast(:iphone) do |message|
         message.body "Minor downtime tonight from 7PM-9PM EST"
-        message.meta_data(a: '/a/b/c')
+        message.meta_data :a => '/a/b/c'
       end
 
       a_request(:post, broadcast_endpoint).should have_been_made
@@ -29,7 +29,7 @@ describe FiveMobilePush::Notifier do
 
       subject.notify_devices(['abc', 'def']) do |message|
         message.body 'You win a prize!'
-        message.meta_data(a: '/a/b/c')
+        message.meta_data :a => '/a/b/c'
       end
 
       a_request(:post, notify_devices_endpoint).should have_been_made
@@ -44,7 +44,7 @@ describe FiveMobilePush::Notifier do
 
       subject.notify_by_tags([:iphone, :android], ['tag1', 'tag2']) do |message|
         message.body 'tag1 and tag2'
-        message.meta_data(a: '/a/b/c')
+        message.meta_data :a => '/a/b/c'
       end
 
       a_request(:post, notify_by_tags_endpoint).should have_been_made
