@@ -2,6 +2,12 @@ module FiveMobilePush
   # @private Used internally. You'll never use this class directly.
   #   Documented for the benefit of contributors.
   class Payload
+    MAXIMUM_MESSAGE_LENGTH = 128
+
+    # This exception is raised when a payload meta data exceed its maximum length
+    class MessageTooLargeError < ArgumentError
+    end
+
     attr_reader :message, :meta_data
 
     # @param [#to_s] message The message you wish to send with a notice
@@ -13,7 +19,7 @@ module FiveMobilePush
     end
 
     def meta_data=(new_meta_data)
-      raise ArgumentError, 'meta_data must be a Hash' unless new_meta_data.is_a?(Hash)
+      validate_meta_data!(new_meta_data)
       @meta_data = new_meta_data
     end
 
@@ -28,6 +34,24 @@ module FiveMobilePush
     end
 
     private
+
+    def validate_meta_data!(meta_data)
+      meta_data_is_correct_type!(meta_data)
+      meta_data_messages_is_valid_length!(meta_data)
+    end
+
+    def meta_data_is_correct_type!(meta_data)
+      unless meta_data.is_a?(Hash)
+        raise ArgumentError, 'meta_data must be a Hash'
+      end
+    end
+
+    # @todo Better error message for lengthy meta data
+    def meta_data_messages_is_valid_length!(meta_data)
+      unless meta_data.all? { |k, v| v.length <= MAXIMUM_MESSAGE_LENGTH }
+        raise MessageTooLargeError
+      end
+    end
 
     def as_json
       {
