@@ -21,7 +21,7 @@ module FiveMobilePush
 
       # @private
       def to_payload
-        FiveMobilePush::Payload.new(@body, @meta_data)
+        FiveMobilePush::Payload.new(@body, @meta_data || {})
       end
     end
   end
