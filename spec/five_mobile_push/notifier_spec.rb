@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'uri'
 
 describe FiveMobilePush::Notifier do
-
   let(:client) { Fabricate.build(:client) }
 
   subject { FiveMobilePush::Notifier.new(client) }
@@ -19,11 +18,9 @@ describe FiveMobilePush::Notifier do
 
       a_request(:post, broadcast_endpoint).should have_been_made
     end
-
   end
 
   describe '#notify_devices' do
-
     let(:notify_devices_endpoint) { notifier_endpoint('toDevices') }
 
     it "notifies a list of devices" do
@@ -35,11 +32,9 @@ describe FiveMobilePush::Notifier do
 
       a_request(:post, notify_devices_endpoint).should have_been_made
     end
-
   end
 
   describe "#notify_by_tags" do
-
     let(:notify_by_tags_endpoint) { notifier_endpoint('toTags') }
 
     it "notifies devices by tags" do
@@ -51,11 +46,9 @@ describe FiveMobilePush::Notifier do
 
       a_request(:post, notify_by_tags_endpoint).should have_been_made
     end
-
   end
 
   def notifier_endpoint(name)
     "https://push.fivemobile.com/rest/notify/#{name}"
   end
-
 end
