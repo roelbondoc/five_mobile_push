@@ -43,24 +43,42 @@ module FiveMobilePush
     end
 
     # @return [URI] a URI object for the {DEFAULT_ENDPOINT}
-    def self.default_endpoint
+    def default_endpoint
       URI.parse(DEFAULT_ENDPOINT)
     end
 
     private
 
+      # def perform_request(method, path, options={})
+      #   options.merge!({:api_token => self.api_token, :application_id =>  self.application_uid })
+      #   connection.send(method) do |request|
+      #     case method
+      #     when :get, :delete
+      #       request.url(path, options)
+      #     when :post, :put
+      #       request.path = path
+      #       request.body = options
+      #     end
+      #   end
+      # end
+      
       def perform_request(method, path, options={})
         options.merge!({:api_token => self.api_token, :application_id =>  self.application_uid })
-        connection.send(method) do |request|
+        # connection.send(method) do |request|        
           case method
           when :get, :delete
-            request.url(path, options)
+            # request.url(path, options)
+            Faraday.get((default_endpoint+path).to_s, options)
           when :post, :put
-            request.path = path
-            request.body = options
+            debugger
+            a = 1
+            
+            x = Faraday.post((default_endpoint+path).to_s, options)
+            # request.path = path
+            # request.body = options
           end
         end
-      end
+      # end
 
   end
 end
