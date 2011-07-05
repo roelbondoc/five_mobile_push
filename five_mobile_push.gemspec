@@ -5,7 +5,7 @@ require "five_mobile_push/version"
 Gem::Specification.new do |s|
   s.name        = "five_mobile_push"
   s.version     = FiveMobilePush::VERSION
-  s.platform    = Gem::Platform::RUBY
+  s.platform    = Gem::Platform::CURRENT
   s.authors     = ["Kevin Faustino", "James Herdman"]
   s.email       = ["kevin.faustino@gmail.com", "james.herdman@me.com"]
   s.homepage    = ""
@@ -19,8 +19,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_dependency "multi_json",              ["~> 1.0.0"]
-  s.add_dependency "faraday",                 ["~> 0.5.7"]
+  s.add_runtime_dependency "multi_json",      ["~> 1.0.0"]
+  s.add_runtime_dependency "faraday",         ["~> 0.7.3"]
+
+  s.add_development_dependency "rake"
   s.add_development_dependency "rspec",       ["~> 2.5.0"]
   s.add_development_dependency "yajl-ruby"
   s.add_development_dependency "webmock"

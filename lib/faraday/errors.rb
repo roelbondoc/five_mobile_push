@@ -4,28 +4,23 @@ require 'faraday'
 # is currently incomplete.
 module Faraday
   class Response::Errors < Response::Middleware
-
-    begin
-      def self.register_on_complete(env)
-        env[:response].on_complete do |finished_env|
-          case finished_env[:status]
+    def call(env)
+      @app.call(env).on_complete do
+        case env[:status]
           when 400
-            raise FiveMobilePush::GeneralError, finished_env[:body]
+            raise FiveMobilePush::GeneralError, response_values(env)
           when 401
-            raise FiveMobilePush::UnauthorizedError, finished_env[:body]
+            raise FiveMobilePush::UnauthorizedError, response_values(env)
           when 500
-            raise FiveMobilePush::ServerError, 'push.fivemobile.com is currently down'
-          end
+            env[:body] = 'push.fivemobile.com is currently down'
+            raise FiveMobilePush::ServerError, response_values(env)
         end
       end
-    rescue LoadError, NameError => e
-      self.load_error = e
     end
 
-    def initialize(app)
-      super
-      @parser = nil
+    # Copied from Faraday
+    def response_values(env)
+      { :status => env[:status], :headers => env[:response_headers], :body => env[:body] }
     end
-
   end
 end

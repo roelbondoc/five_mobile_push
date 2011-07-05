@@ -9,8 +9,7 @@ describe FiveMobilePush::Client do
 
   it "connects using the fivemobile endpoint" do
     connection = subject.send(:connection).build_url(nil).to_s
-    endpoint = URI.parse(described_class::DEFAULT_ENDPOINT)
-    connection.should == endpoint.to_s
+    connection.should == described_class.default_endpoint.to_s
   end    
   
   describe "#device" do
@@ -39,7 +38,7 @@ describe FiveMobilePush::Client do
   
   context "response code is 400" do
     
-    let(:path) { "https://push.fivemobile.com/rest/some_endpoint?api_token=#{api_token}&application_id=#{application_uid}" }
+    let(:path) { (described_class.default_endpoint + "some_endpoint?api_token=#{api_token}&application_id=#{application_uid}").to_s }
     
     it "raises a GeneralError" do
       stub_request(:any, path).to_return(:body => "something broken", :status => 400)
@@ -50,7 +49,7 @@ describe FiveMobilePush::Client do
   
   context "response code is 401" do
     
-    let(:path) { "https://push.fivemobile.com/rest/some_endpoint?api_token=#{api_token}&application_id=#{application_uid}" }
+    let(:path) { (described_class.default_endpoint + "some_endpoint?api_token=#{api_token}&application_id=#{application_uid}").to_s }
     
     it "raises a GeneralError" do
       stub_request(:any, path).to_return(:body => "something broken", :status => 401)
@@ -61,7 +60,7 @@ describe FiveMobilePush::Client do
   
   context "response code is 500" do
     
-    let(:path) { "https://push.fivemobile.com/rest/some_endpoint?api_token=#{api_token}&application_id=#{application_uid}" }
+    let(:path) { (described_class.default_endpoint + "some_endpoint?api_token=#{api_token}&application_id=#{application_uid}").to_s }
     
     it "raises a GeneralError" do
       stub_request(:any, path).to_return(:body => "something broken", :status => 500)
@@ -70,4 +69,12 @@ describe FiveMobilePush::Client do
     
   end
 
+  describe '.default_endpoint' do
+    it { described_class.default_endpoint.should be_a(URI) }
+
+    it 'acts as a URI object' do
+      uri = described_class.default_endpoint + 'foo'
+      uri.to_s.should =~ /foo\z/
+    end
+  end
 end

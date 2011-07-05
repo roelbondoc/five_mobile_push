@@ -98,7 +98,7 @@ describe FiveMobilePush::Device do
   end
 
   def device_endpoint(name)
-    "https://push.fivemobile.com/rest/device/#{name}"
+    (FiveMobilePush::Client.default_endpoint + "device/#{name}").to_s
   end
 
 end

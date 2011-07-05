@@ -1,9 +1,10 @@
+require 'uri'
 require 'faraday/errors'
 
 module FiveMobilePush
   class Client
 
-    DEFAULT_ENDPOINT = 'https://push.fivemobile.com/rest/'
+    DEFAULT_ENDPOINT = 'https://push.fivemobile.com/rest'
 
     attr_accessor :application_uid, :api_token, :adapter
 
@@ -39,6 +40,11 @@ module FiveMobilePush
 
     def tag(device_uid)
       FiveMobilePush::Tag.new(self, device_uid)
+    end
+
+    # @return [URI] a URI object for the {DEFAULT_ENDPOINT}
+    def self.default_endpoint
+      URI.parse(DEFAULT_ENDPOINT)
     end
 
     private

@@ -49,11 +49,8 @@ describe FiveMobilePush::Tag do
 
   end
 
-  describe "#get" do
-  end
-
   def tag_endpoint(name)
-     "https://push.fivemobile.com/rest/device/tags/#{name}"
+    (FiveMobilePush::Client.default_endpoint + "tags/#{name}").to_s
   end
 
 end
