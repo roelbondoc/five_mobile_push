@@ -70,4 +70,12 @@ describe FiveMobilePush::Client do
     
   end
 
+  describe '.default_endpoint' do
+    it { described_class.default_endpoint.should be_a(URI) }
+
+    it 'acts as a URI object' do
+      uri = described_class.default_endpoint + 'foo'
+      uri.to_s.should =~ /foo\z/
+    end
+  end
 end
