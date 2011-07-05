@@ -16,7 +16,7 @@ describe FiveMobilePush::Device do
       {
         :manufacturer => 'Apple',
         :model        => 'iPhone 4',
-        :platform     => 'iOS',
+        :platform     => 'iPhone OS',
         :platform_ver => 'iOS 4.3'
       }
     }
@@ -98,7 +98,7 @@ describe FiveMobilePush::Device do
   end
 
   def device_endpoint(name)
-    (FiveMobilePush::Client.default_endpoint + "device/#{name}").to_s
+    (FiveMobilePush::Client::DEFAULT_ENDPOINT + "/device/#{name}").to_s
   end
 
 end

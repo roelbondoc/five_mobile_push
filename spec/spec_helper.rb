@@ -1,9 +1,11 @@
 require 'five_mobile_push'
 require 'rspec'
-require 'webmock/rspec'
+# require 'webmock/rspec'
 require 'yajl'
 require 'uri'
 require 'fabrication'
+
+require 'ruby-debug'
 
 RSpec.configure do |config|
   config.mock_with :rspec

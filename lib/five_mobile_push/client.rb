@@ -1,25 +1,16 @@
 require 'uri'
-require 'faraday/errors'
+require 'faraday'
 
 module FiveMobilePush
   class Client
 
     DEFAULT_ENDPOINT = 'https://push.fivemobile.com/rest'
 
-    attr_accessor :application_uid, :api_token, :adapter
+    attr_accessor :application_uid, :api_token
 
     def initialize(options={})
       self.application_uid = options[:application_uid] || FiveMobilePush.application_uid
       self.api_token = options[:api_token]             || FiveMobilePush.api_token
-      self.adapter = options[:adapter]                 || FiveMobilePush.adapter
-    end
-
-
-    def connection
-      @connection ||= Faraday.new(:url => DEFAULT_ENDPOINT, :user_agent => 'FiveMobilePush Ruby gem') do |builder|
-        builder.adapter self.adapter
-        builder.use Faraday::Response::Errors
-      end
     end
 
     def get(path, options={})
@@ -42,25 +33,19 @@ module FiveMobilePush
       FiveMobilePush::Tag.new(self, device_uid)
     end
 
-    # @return [URI] a URI object for the {DEFAULT_ENDPOINT}
-    def self.default_endpoint
-      URI.parse(DEFAULT_ENDPOINT)
-    end
-
     private
 
       def perform_request(method, path, options={})
         options.merge!({:api_token => self.api_token, :application_id =>  self.application_uid })
-        connection.send(method) do |request|
-          case method
-          when :get, :delete
-            request.url(path, options)
-          when :post, :put
-            request.path = path
-            request.body = options
-          end
+
+        uri = [DEFAULT_ENDPOINT, path].join('/')
+
+        case method
+        when :get
+          Faraday.get(uri, options)
+        when :post
+          Faraday.post(uri, options)
         end
       end
-
   end
 end
