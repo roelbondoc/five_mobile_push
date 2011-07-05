@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   
   s.add_dependency "multi_json",              ["~> 1.0.0"]
   s.add_dependency "faraday",                 ["~> 0.5.7"]
+
+  s.add_development_dependency "rake"
   s.add_development_dependency "rspec",       ["~> 2.5.0"]
   s.add_development_dependency "yajl-ruby"
   s.add_development_dependency "webmock"
