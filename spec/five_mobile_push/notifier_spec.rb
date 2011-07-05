@@ -52,6 +52,6 @@ describe FiveMobilePush::Notifier do
   end
 
   def notifier_endpoint(name)
-    (FiveMobilePush::Client.default_endpoint + "notify/#{name}").to_s
+    (FiveMobilePush::Client::DEFAULT_ENDPOINT + "notify/#{name}").to_s
   end
 end

@@ -50,7 +50,7 @@ describe FiveMobilePush::Tag do
   end
 
   def tag_endpoint(name)
-    (FiveMobilePush::Client.default_endpoint + "tags/#{name}").to_s
+    (FiveMobilePush::Client::DEFAULT_ENDPOINT + "tags/#{name}").to_s
   end
 
 end
