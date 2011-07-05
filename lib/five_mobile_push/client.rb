@@ -3,7 +3,7 @@ require 'faraday/errors'
 module FiveMobilePush
   class Client
 
-    DEFAULT_ENDPOINT = 'https://push.fivemobile.com/rest/'
+    DEFAULT_ENDPOINT = 'https://push.fivemobile.com/rest'
 
     attr_accessor :application_uid, :api_token, :adapter
 
