@@ -5,7 +5,7 @@ require "five_mobile_push/version"
 Gem::Specification.new do |s|
   s.name        = "five_mobile_push"
   s.version     = FiveMobilePush::VERSION
-  s.platform    = Gem::Platform::RUBY
+  s.platform    = Gem::Platform::CURRENT
   s.authors     = ["Kevin Faustino", "James Herdman"]
   s.email       = ["kevin.faustino@gmail.com", "james.herdman@me.com"]
   s.homepage    = ""
