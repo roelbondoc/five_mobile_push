@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 FiveMobilePush.configure do |config|
-  config.api_token        = '7ra6yke0qsgCnTRFPNiGMNJzMrWJW5NJ'
-  config.application_uid  = 'NULAYER_SCOREDEV'
+  config.api_token        = ''
+  config.application_uid  = ''
 end
 
 describe FiveMobilePush::Client do
@@ -125,7 +125,7 @@ describe FiveMobilePush::Client do
     end
     
     it "delete a tag" do
-      resp = subject.tag(device.uid, device_token).create(['food'])
+      resp = subject.tag(device.uid, device_token).delete(['summer'])
       resp.status.should == 200
     end
     
