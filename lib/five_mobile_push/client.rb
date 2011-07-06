@@ -1,4 +1,3 @@
-require 'uri'
 require 'faraday'
 
 module FiveMobilePush
@@ -10,7 +9,7 @@ module FiveMobilePush
 
     def initialize(options={})
       self.application_uid = options[:application_uid] || FiveMobilePush.application_uid
-      self.api_token = options[:api_token]             || FiveMobilePush.api_token
+      self.api_token       = options[:api_token]       || FiveMobilePush.api_token
     end
 
     def get(path, options={})
@@ -21,31 +20,38 @@ module FiveMobilePush
       perform_request(:post, path, options)
     end
 
-    def device(device_uid)
-      FiveMobilePush::Device.new(self, device_uid)
+    def device(device_uid, device_token=nil)
+      FiveMobilePush::Device.new(self, device_uid, device_token)
     end
 
     def notifier
       FiveMobilePush::Notifier.new(self)
     end
 
-    def tag(device_uid)
-      FiveMobilePush::Tag.new(self, device_uid)
+    def tag(device_uid, device_token)
+      FiveMobilePush::Tag.new(self, device_uid, device_token)
     end
 
     private
 
       def perform_request(method, path, options={})
-        options.merge!({:api_token => self.api_token, :application_id =>  self.application_uid })
+        options.merge!(
+          :api_token      => options[:api_token] || api_token,
+          :application_id => application_uid
+        )
 
-        uri = [DEFAULT_ENDPOINT, path].join('/')
-
-        case method
-        when :get
-          Faraday.get(uri, options)
-        when :post
-          Faraday.post(uri, options)
+        conn = Faraday.new(:url => DEFAULT_ENDPOINT)
+        resp = conn.send(method) do |req|
+          req.url path, options
         end
+
+        # TODO Add error processor here.
+        # Basic error checking
+        if resp.status == 400
+          raise InvalidToken if resp.body =~ /Invalid API token/i
+        end
+
+        resp
       end
   end
 end

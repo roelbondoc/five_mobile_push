@@ -3,15 +3,16 @@ module FiveMobilePush
 
     VALID_OPTION_KEYS = [:alias, :email]
 
-    attr_reader :device_uid
+    attr_reader :uid, :token
 
     # @param [FiveMobilePush::Client] client The Client to use to send this request
     #
-    # @param [String] device_uid The ID of the device being registered.
+    # @param [String] uid The ID of the device being registered.
     #   Maximum of 64 characters.
-    def initialize(client, device_uid)
-      @client     = client
-      @device_uid = device_uid
+    def initialize(client, uid, token=nil)
+      @client = client
+      @uid    = uid
+      @token  = token
     end
 
     # Registers a device for receiving push notifications from an application.
@@ -34,28 +35,42 @@ module FiveMobilePush
     # @option device_info [String] :platform_ver Software platform version.
     #
     # @return [Hash] Has unique device API key. Required for many other calls.
-    def register(device_info, registration_data=nil)
+    def register(info, registration_data=nil)
       options = {
-        :device_id   => @device_uid,
-        :device_info => MultiJson.encode(device_info)
+        :device_id   => @uid,
+        :device_info => MultiJson.encode(info)
       }
 
       options[:reg_data] = registration_data unless registration_data.nil?
       response = @client.post 'device/register', options
-      MultiJson.decode(response.body)
+      
+      if response.headers['content-type'] =~ /json/i
+        MultiJson.decode(response.body)
+      else
+        response.body
+      end
     end
 
     def resume
-      @client.post 'device/resume', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => @device_uid
+      client_operation 'device/resume'
     end
 
     def suspend
-      @client.post 'device/suspend', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => @device_uid
+      client_operation 'device/suspend'
     end
 
     def unregister
-      @client.post 'device/unregister', :id_type => FiveMobilePush::DEFAULT_ID_TYPE, :id_value => @device_uid
+      client_operation 'device/unregister'
     end
+
+    private
+    
+      def client_operation(method)
+        @client.post method,
+          :id_type => FiveMobilePush::DEFAULT_ID_TYPE,
+          :id_value => @uid,
+          :api_token => token
+      end
 
   end
 
