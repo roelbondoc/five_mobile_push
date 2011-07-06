@@ -5,10 +5,12 @@ FiveMobilePush.configure do |config|
   config.application_uid  = 'NULAYER_SCOREDEV'
 end
 
+FakeDevice = Struct.new(:id, :uid, :token) unless defined?(FakeDevice)
+
 describe FiveMobilePush::Client do
   subject { described_class.new }
 
-  let(:device) { double('Device', id: 12345, uid: 'abcdef') }
+  let(:device) { FakeDevice.new(12345, 'abcdef') }
 
   let(:device_info) {
     {
@@ -21,13 +23,25 @@ describe FiveMobilePush::Client do
 
   let(:reg_data) { 'cafebabe' }
 
+  # Registers the device on the service, sets its token, and returns the response
   def register_device(device, args={})
     device_info.merge!(args)
-    subject.device(device.uid).register(device_info, reg_data)
+    response     = subject.device(device.uid).register(device_info, reg_data)
+    device.token = response['data']
+    response
+  end
+
+  # Unregisters the device
+  def unregister_device(device)
+    subject.device(device.uid, device.token).unregister
   end
 
   context 'device end points' do
     context 'valid device registration' do
+      after(:each) do
+        unregister_device(device)
+      end
+
       it 'registers the device device' do
         expect {
           register_device(device)
@@ -63,37 +77,52 @@ describe FiveMobilePush::Client do
       end
     end
 
-    it 'unregisters a subscription' do
-      reg_response = register_device(device)
-      device_token = reg_response['data']
+    context 'unregistration' do
+      before(:each) do
+        register_device(device)
+      end
 
-      resp = subject.device(device.uid, device_token).unregister
-      resp.status.should == 200
-      resp.body.should == ''
+      it 'is successful for a valid device' do
+        resp = unregister_device(device)
+        resp.status.should == 200
+        resp.body.should == ''
+      end
+
+      it 'raises an InvalidToken exception for an invalid device' do
+        unregister_device(device) # Once to clean up...
+
+        expect {
+          unregister_device(device) # Again to cause an error...
+        }.to raise_error(FiveMobilePush::InvalidToken)
+      end
     end
 
-    it 'suspends a subscription' do
-      reg_response = register_device(device)
-      device_token = reg_response['data']
+    context 'with a valid device' do
+      before(:each) do
+        register_device(device)
+      end
 
-      resp = subject.device(device.uid, device_token).suspend
-      resp.status.should == 200
-      resp.body.should == ''
-    end
+      after(:each) do
+        unregister_device(device)
+      end
 
-    it 'suspends with an invalid token' do
-      expect {
-        subject.device(device.uid, 'wooohoo').suspend
-      }.to raise_error(FiveMobilePush::InvalidToken)
-    end
+      it 'suspends a device' do
+        resp = subject.device(device.uid, device.token).suspend
+        resp.status.should == 200
+        resp.body.should == ''
+      end
 
-    it 'resumes a subscription' do
-      reg_response = register_device(device)
-      device_token = reg_response['data']
+      it 'suspends with an invalid token' do
+        expect {
+          subject.device(device.uid, 'wooohoo').suspend
+        }.to raise_error(FiveMobilePush::InvalidToken)
+      end
 
-      resp = subject.device(device.uid, device_token).resume
-      resp.status.should == 200
-      resp.body.should == ''
+      it 'resumes a subscription' do
+        resp = subject.device(device.uid, device.token).resume
+        resp.status.should == 200
+        resp.body.should == ''
+      end
     end
   end
 
@@ -132,25 +161,28 @@ describe FiveMobilePush::Client do
 
     let(:tags) { [tag1, tag2] }
 
-    let!(:device_token) { register_device(device)['data'] }
+    before(:each) do
+      register_device(device)
+    end
+
+    after(:each) do
+      unregister_device(device)
+    end
 
     it "create a tag" do
-      resp = subject.tag(device.uid, device_token).create(tags)
+      resp = subject.tag(device.uid, device.token).create(tags)
       resp.status.should == 200
     end
 
     it "delete a tag" do
-      resp = subject.tag(device.uid, device_token).delete(tag2)
+      resp = subject.tag(device.uid, device.token).delete(tag2)
       resp.status.should == 200
     end
 
-    # NOTE: I am pretty sure this does not work on FiveMobile's service...
-    # resp.body keeps telling us the application_id must be supplied,
-    # but we are passing it ..
     it "get a device's tags" do
-      subject.tag(device.uid, device_token).create(tags)
+      subject.tag(device.uid, device.token).create(tags)
 
-      resp = subject.tag(device.uid, device_token).get
+      resp = subject.tag(device.uid, device.token).get
       resp.status.should == 200
       resp.body.should == tags
     end
