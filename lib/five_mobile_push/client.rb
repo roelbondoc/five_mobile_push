@@ -40,12 +40,12 @@ module FiveMobilePush
           :application_id => application_uid
         )
 
-        uri = [DEFAULT_ENDPOINT, path].join('/')
+        conn = Faraday.new(:url => DEFAULT_ENDPOINT)
+        resp = conn.send(method) do |req|
+          req.url path, options
+        end
 
-        # Pass through the request (GET, POST, etc.)
-        resp = Faraday.send(method, uri, options)
-
-        # TODO Add error processor here. It's a shame we can't use Faraday middleware :sadface:
+        # TODO Add error processor here.
         # Basic error checking
         if resp.status == 400
           raise InvalidToken if resp.body =~ /Invalid API token/i

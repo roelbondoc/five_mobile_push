@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 FiveMobilePush.configure do |config|
-  config.api_token        = '7ra6yke0qsgCnTRFPNiGMNJzMrWJW5NJ'
-  config.application_uid  = 'NULAYER_SCOREDEV'
+  config.api_token        = ''
+  config.application_uid  = ''
 end
 
 FakeDevice = Struct.new(:id, :uid, :token) unless defined?(FakeDevice)
@@ -181,10 +181,8 @@ describe FiveMobilePush::Client do
 
     it "get a device's tags" do
       subject.tag(device.uid, device.token).create(tags)
-
       resp = subject.tag(device.uid, device.token).get
-      resp.status.should == 200
-      resp.body.should == tags
+      resp.should == tags
     end
   end
 end

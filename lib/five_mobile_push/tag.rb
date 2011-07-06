@@ -27,10 +27,16 @@ module FiveMobilePush
     end
 
     def get
-      client.get end_point(:get),
+      response = client.get end_point(:get),
         :id_type   => FiveMobilePush::DEFAULT_ID_TYPE,
         :id_value  => device_uid,
         :api_token => device_token
+        
+      if response.headers['content-type'] =~ /json/i
+        MultiJson.decode(response.body)
+      else
+        response.body
+      end
     end
 
     private
