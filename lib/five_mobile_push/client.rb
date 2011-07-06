@@ -1,4 +1,3 @@
-require 'uri'
 require 'faraday'
 
 module FiveMobilePush
@@ -10,7 +9,7 @@ module FiveMobilePush
 
     def initialize(options={})
       self.application_uid = options[:application_uid] || FiveMobilePush.application_uid
-      self.api_token = options[:api_token]             || FiveMobilePush.api_token
+      self.api_token       = options[:api_token]       || FiveMobilePush.api_token
     end
 
     def get(path, options={})
@@ -36,20 +35,22 @@ module FiveMobilePush
     private
 
       def perform_request(method, path, options={})
-        options.merge!({:api_token      => options[:api_token] || self.api_token,
-                        :application_id => self.application_uid })
+        options.merge!(
+          :api_token      => options[:api_token] || api_token,
+          :application_id => application_uid
+        )
 
         uri = [DEFAULT_ENDPOINT, path].join('/')
 
-        # Pass through the request, :GET, :POST, etc.
+        # Pass through the request (GET, POST, etc.)
         resp = Faraday.send(method, uri, options)
-        
+
+        # TODO Add error processor here. It's a shame we can't use Faraday middleware :sadface:
         # Basic error checking
         if resp.status == 400
           raise InvalidToken if resp.body =~ /Invalid API token/i
         end
-        
-        # Response
+
         resp
       end
   end
