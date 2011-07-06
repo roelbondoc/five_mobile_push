@@ -21,31 +21,36 @@ module FiveMobilePush
       perform_request(:post, path, options)
     end
 
-    def device(device_uid)
-      FiveMobilePush::Device.new(self, device_uid)
+    def device(device_uid, device_token=nil)
+      FiveMobilePush::Device.new(self, device_uid, device_token)
     end
 
     def notifier
       FiveMobilePush::Notifier.new(self)
     end
 
-    def tag(device_uid)
-      FiveMobilePush::Tag.new(self, device_uid)
+    def tag(device_uid, device_token)
+      FiveMobilePush::Tag.new(self, device_uid, device_token)
     end
 
     private
 
       def perform_request(method, path, options={})
-        options.merge!({:api_token => self.api_token, :application_id =>  self.application_uid })
+        options.merge!({:api_token      => options[:api_token] || self.api_token,
+                        :application_id => self.application_uid })
 
         uri = [DEFAULT_ENDPOINT, path].join('/')
 
-        case method
-        when :get
-          Faraday.get(uri, options)
-        when :post
-          Faraday.post(uri, options)
+        # Pass through the request, :GET, :POST, etc.
+        resp = Faraday.send(method, uri, options)
+        
+        # Basic error checking
+        if resp.status == 400
+          raise InvalidToken if resp.body =~ /Invalid API token/i
         end
+        
+        # Response
+        resp
       end
   end
 end

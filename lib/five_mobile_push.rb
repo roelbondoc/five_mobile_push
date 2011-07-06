@@ -15,6 +15,7 @@ module FiveMobilePush
   class GeneralError         < StandardError; end
   class ServerError          < StandardError; end
   class InvalidPlatformError < StandardError; end
+  class InvalidToken         < StandardError; end
 
   DEFAULT_ID_TYPE = 'native'
 
