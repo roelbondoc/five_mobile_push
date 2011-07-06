@@ -171,11 +171,13 @@ describe FiveMobilePush::Client do
 
     it "create a tag" do
       resp = subject.tag(device.uid, device.token).create(tags)
+      resp.body.should == ''
       resp.status.should == 200
     end
 
     it "delete a tag" do
       resp = subject.tag(device.uid, device.token).delete(tag2)
+      resp.body.should == ''
       resp.status.should == 200
     end
 
