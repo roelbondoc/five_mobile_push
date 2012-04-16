@@ -11,11 +11,13 @@ module FiveMobilePush
   autoload :Message,  'five_mobile_push/message'
   autoload :Platform, 'five_mobile_push/platform'
 
-  class UnauthorizedError    < StandardError; end
-  class GeneralError         < StandardError; end
-  class ServerError          < StandardError; end
-  class InvalidPlatformError < StandardError; end
-  class InvalidToken         < StandardError; end
+  class Error                < StandardError; end
+  class UnauthorizedError    < Error; end
+  class GeneralError         < Error; end
+  class ServerError          < Error; end
+  class InvalidPlatformError < Error; end
+  class InvalidTokenError    < Error; end
+  class UnknownDeviceError   < Error; end
 
   DEFAULT_ID_TYPE = 'native'
 

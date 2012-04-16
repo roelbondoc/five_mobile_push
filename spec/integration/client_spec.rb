@@ -88,12 +88,12 @@ describe FiveMobilePush::Client do
         resp.body.should == ''
       end
 
-      it 'raises an InvalidToken exception for an invalid device' do
+      it 'raises an InvalidTokenError exception for an invalid device' do
         unregister_device(device) # Once to clean up...
 
         expect {
           unregister_device(device) # Again to cause an error...
-        }.to raise_error(FiveMobilePush::InvalidToken)
+        }.to raise_error(FiveMobilePush::InvalidTokenError)
       end
     end
 
@@ -115,7 +115,7 @@ describe FiveMobilePush::Client do
       it 'suspends with an invalid token' do
         expect {
           subject.device(device.uid, 'wooohoo').suspend
-        }.to raise_error(FiveMobilePush::InvalidToken)
+        }.to raise_error(FiveMobilePush::InvalidTokenError)
       end
 
       it 'resumes a subscription' do

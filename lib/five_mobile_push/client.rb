@@ -48,7 +48,8 @@ module FiveMobilePush
         # TODO Add error processor here.
         # Basic error checking
         if resp.status == 400
-          raise InvalidToken if resp.body =~ /Invalid API token/i
+          raise InvalidTokenError  if resp.body =~ /Invalid API token/i
+          raise UnknownDeviceError if resp.body =~ /Unknown device/i
         end
 
         resp
