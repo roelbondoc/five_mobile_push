@@ -18,6 +18,7 @@ module FiveMobilePush
   class InvalidPlatformError < Error; end
   class InvalidTokenError    < Error; end
   class UnknownDeviceError   < Error; end
+  class TimeoutError         < Error; end
 
   DEFAULT_ID_TYPE = 'native'
 

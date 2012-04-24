@@ -41,18 +41,21 @@ module FiveMobilePush
         )
 
         conn = Faraday.new(:url => DEFAULT_ENDPOINT)
-        resp = conn.send(method) do |req|
-          req.url path, options
-        end
 
-        # TODO Add error processor here.
-        # Basic error checking
-        if resp.status == 400
-          raise InvalidTokenError  if resp.body =~ /Invalid API token/i
-          raise UnknownDeviceError if resp.body =~ /Unknown device/i
-        end
+        begin
+          resp = conn.send(method) do |req|
+            req.url path, options
+          end
 
-        resp
+          resp.tap do |r|
+            if r.status == 400
+              raise InvalidTokenError  if r.body =~ /Invalid API token/i
+              raise UnknownDeviceError if r.body =~ /Unknown device/i
+            end
+          end
+        rescue Faraday::Error::TimeoutError => e
+          raise TimeoutError, e.message
+        end
       end
   end
 end
