@@ -40,7 +40,9 @@ module FiveMobilePush
           :application_id => application_uid
         )
 
-        conn = Faraday.new(:url => DEFAULT_ENDPOINT)
+        conn = Faraday.new(:url => DEFAULT_ENDPOINT) do |builder|
+          builder.use Faraday::Adapter::Patron
+        end
 
         begin
           resp = conn.send(method) do |req|
