@@ -57,6 +57,8 @@ module FiveMobilePush
           end
         rescue Faraday::Error::TimeoutError => e
           raise TimeoutError, e.message
+        rescue Patron::Error => e
+          raise Error, e.message
         end
       end
   end
